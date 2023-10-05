@@ -23,5 +23,5 @@ The data has been sampled from schools across the United States.
 The columns have well-formatted names and there are well-formatted levels. There are missing values in the nces_school_id, nces_district_id, district_name, time, age_shooter1, gender_shooter1, race_ethnicity_shooter1, shooter_relationship1, shooter_deceased, deceased_notes, and about 16 more variables. 
 
 ## Data Sheet
-There are 387 rows and 50 columns. 
+This is tabular data. There are 387 rows and 50 columns. 
 
