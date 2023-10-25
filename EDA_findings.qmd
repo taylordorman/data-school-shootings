@@ -1,0 +1,39 @@
+---
+title: "EDA findings"
+format: html
+editor: visual
+---
+
+## What I did:
+
+I created multiple graphs to compare variables within the school shooting data set.
+
+## Findings:
+
+I found that:
+
+-   The number of children killed each year from school shootings fluctuates. The most deaths occurred in 2012.
+
+\- The number of children injured also fluctuates. The most injuries occurred in 2018.
+
+\- The majority of the shooters are white males.
+
+\- The majority of the shooters are of high school age. The youngest shooter was 6 years old and the oldest was 72.
+
+\- The majority of the shooting occur in public high schools.
+
+\- On average, private schools have more staffing but the range is greater in public schools.
+
+\- The shootings happened across the United States. They tend to occur more in the south.
+
+\- The day of the week did not seem to play a role on when the shootings occurred. The most happened on a Tuesday and the least happened on a Thursday.
+
+\- There is a weak correlation between number of students enrolled and number of students injured.
+
+\- Staffing varies greatly. Many schools have a range in the 40s.
+
+\- There is a great distribution of where the shootings occur. The most occurred in Florida (state pip =12).
+
+## Conclusions:
+
+The majority of school shooters are white males that are of high school age. They tend to attack public schools in the south. It is important to know this data to understand why this population does this in this area of the country. By understanding the problem, hopefully policies can be implemented to decrease the frequencies of school shootings.
