@@ -1,0 +1,30 @@
+---
+title: "Data Package Assignment"
+author: "Taylor Dorman"
+format: html
+editor: visual
+---
+
+# Data Package Assignment
+
+## Data
+
+### Who created the data and where did you obtain it from?
+
+This data is created by stevenrich on github from the Washington Post.
+
+### Why was the data collected?
+
+The data was collected to see how many children have been impacted by school shootings since Columbine on April 20, 1999.
+
+### From what population(s) has the data been sampled?
+
+The data has been sampled from schools across the United States.
+
+## Cleaned Data
+
+The columns have well-formatted names and there are well-formatted levels. There are missing values in the nces_school_id, nces_district_id, district_name, time, age_shooter1, gender_shooter1, race_ethnicity_shooter1, shooter_relationship1, shooter_deceased, deceased_notes, and about 16 more variables.
+
+## Data Sheet
+
+This is tabular data. There are 387 rows and 50 columns.

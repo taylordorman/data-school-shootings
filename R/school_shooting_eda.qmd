@@ -1,0 +1,119 @@
+---
+title: "School Shooting EDA"
+author: "Taylor Dorman"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(skimr)
+library(RColorBrewer)
+theme_set(theme_minimal())
+```
+
+```{r}
+# Remove missing data  
+ssd_no_NA <- school_shootings_data %>% 
+  filter(!is.na(nces_school_id),
+         !is.na(school_name),
+         !is.na(gender_shooter1),
+         !is.na(time),
+         !is.na(age_shooter1),
+         !is.na(race_ethnicity_shooter1),
+         !is.na(shooter_relationship1),
+         !is.na(shooter_deceased1),
+         !is.na(weapon),
+         !is.na(weapon_source),
+         !is.na(staffing),
+         !is.na(low_grade),
+         !is.na(high_grade))
+```
+
+```{r}
+#year vs killed  
+ggplot(ssd_no_NA,aes(x=year,y=killed))+
+  geom_bar(stat="identity")+
+  scale_fill_brewer(palette="Set3")+
+  labs(x="Year",y="Number of Children Killed")
+```
+
+```{r}
+#year vs injured
+ggplot(ssd_no_NA,aes(x=year,y=injured))+
+  geom_bar(stat="identity")
+```
+
+?
+
+```{r}
+ggplot(ssd_no_NA,aes(x=gender_shooter1))+
+  geom_bar()+
+  labs(x="Gender of the Shooter",y="Count")
+```
+
+```{r}
+#Gender and age of shooter
+ggplot(ssd_no_NA,aes(x=age_shooter1,fill=gender_shooter1))+
+  geom_bar()+
+  labs(x="Age of Shooter",y="Count",fill="Gender of Shooter")
+```
+
+```{r}
+#school type vs injured
+ggplot(ssd_no_NA,aes(x=injured,fill=school_type))+
+  geom_bar()+
+  labs(x="Children Injured", y="Count",fill="School Type")
+```
+
+```{r}
+#school type vs staffing
+ggplot(ssd_no_NA,aes(x=school_type,y=staffing))+
+  geom_boxplot()+
+  labs(x="School Type",y="Amount of Staff")
+```
+
+```{r}
+# where shootings occur in the country
+ggplot(ssd_no_NA,aes(x=lat,y=long))+
+  geom_point(alpha=0.2)
+```
+
+```{r}
+# Effect of day of the week
+ggplot(ssd_no_NA,aes(x=day_of_week))+
+  geom_bar()+
+  labs(x="Day of Week",y="Count")
+```
+
+```{r}
+#Ethnicity of shooter
+ggplot(ssd_no_NA,aes(x=race_ethnicity_shooter1))+
+  geom_bar()+
+  labs(x="Ethnicity of Shooter",y="Count")
+```
+
+```{r}
+#Ethnicity and gender of shooter
+ggplot(ssd_no_NA,aes(x=race_ethnicity_shooter1,fill=gender_shooter1))+
+  geom_bar()+
+  labs(x="Ethnicity of Shooter",y="Count",fill="Gender of Shooter")
+```
+
+```{r}
+#enrollment vs injured
+ggplot(ssd_no_NA,aes(x=enrollment,y=injured))+
+  geom_point()+
+  labs(x="Number of students enrolled",y="Number of students injured'")
+```
+
+```{r}
+#amount of staffing
+ggplot(ssd_no_NA,aes(x=staffing))+
+  geom_histogram()
+```
+
+```{r}
+ggplot(ssd_no_NA,aes(x=state_fips))+
+  geom_bar()
+```

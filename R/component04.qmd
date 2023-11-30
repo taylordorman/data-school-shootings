@@ -1,0 +1,193 @@
+---
+title: "Component 4"
+format: html
+editor: visual
+---
+
+## Casualty Model
+
+K Nearest Neighbor model to predict casualities as a result of school schools each year. 
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(kableExtra)
+library(ggthemes)
+library(ggplot2)
+```
+
+New data set with predictors 
+```{r}
+school_shootings_data <- read_csv("../data-school-shootings/data/school-shootings-data.csv")
+
+
+ssd_new<-school_shootings_data %>% select(year,state,school_type,age_shooter1,killed) %>% drop_na()
+```
+
+Look at new data set
+```{r}
+glimpse(ssd_new)
+```
+
+Split data into training and testing set
+```{r}
+set.seed(123)
+
+ssd_split <-
+  initial_split(ssd_new ,prop = 0.8)
+
+ssd_train <- training(ssd_split)
+ssd_test <- testing(ssd_split)
+```
+
+
+```{r}
+ssd_cas_rec <- recipe(killed ~ year + state + school_type + age_shooter1,
+                       data = ssd_train) %>%
+  step_normalize(all_numeric_predictors())
+
+ssd_cas_spec <- nearest_neighbor(neighbors = 5) %>%
+  set_engine("kknn") %>%
+  set_mode("regression")
+
+ssd_cas_wf <- workflow() %>%
+  add_recipe(ssd_cas_rec) %>%
+  add_model(ssd_cas_spec)
+
+ssd_cas_fit <- fit(ssd_cas_wf,ssd_train)
+```
+
+Examine results
+```{r}
+ssd_cas_fit %>%
+  predict(ssd_test) %>%
+  cbind(ssd_test) %>%
+  rmse(killed,.pred) %>%
+  kable()
+```
+
+Predicted against actual
+```{r}
+ssd_cas_fit %>%
+  predict(ssd_test) %>%
+  cbind(ssd_test) %>%
+  ggplot(aes(x=killed, y = .pred)) +
+  geom_point(color="darkblue") + 
+  geom_abline(linetype="dashed") + 
+  labs(x = "Actual Amount of Children Killed)", y = "Predicted Children Killed")
+```
+
+
+## Injured Model
+
+K Nearest Neighbor model to predict injuries as a result of school schools each year. 
+
+```{r}
+school_shootings_data <- read_csv("../data-school-shootings/data/school-shootings-data.csv")
+
+
+ssd_new2<-school_shootings_data %>% select(year,state,school_type,age_shooter1,injured) %>% drop_na()
+```
+
+Split data into training and testing set
+```{r}
+set.seed(123)
+
+ssd_split2 <-
+  initial_split(ssd_new2,prop = 0.8)
+
+ssd_train2 <- training(ssd_split2)
+ssd_test2 <- testing(ssd_split2)
+```
+
+```{r}
+ssd_inj_rec <- recipe(injured ~ year + state + school_type + age_shooter1,
+                       data = ssd_train2) %>%
+  step_normalize(all_numeric_predictors())
+
+ssd_inj_spec <- nearest_neighbor(neighbors = 5) %>%
+  set_engine("kknn") %>%
+  set_mode("regression")
+
+ssd_inj_wf <- workflow() %>%
+  add_recipe(ssd_inj_rec) %>%
+  add_model(ssd_inj_spec)
+
+ssd_inj_fit <- fit(ssd_inj_wf,ssd_train2)
+```
+
+Examine results
+```{r}
+ssd_inj_fit %>%
+  predict(ssd_test2) %>%
+  cbind(ssd_test2) %>%
+  rmse(injured,.pred) %>%
+  kable()
+```
+
+Predicted against actual
+```{r}
+ssd_inj_fit %>%
+  predict(ssd_test2) %>%
+  cbind(ssd_test2) %>%
+  ggplot(aes(x=injured, y = .pred)) +
+  geom_point(color="darkblue") + 
+  geom_abline(linetype="dashed") + 
+  labs(x = "Actual Amount of Children Injured)", y = "Predicted Children Injured")
+```
+
+## State Model
+
+Classification to determine which state a shooting occured in based on predictors. 
+
+```{r}
+school_shootings_data <- read_csv("../data-school-shootings/data/school-shootings-data.csv")
+
+
+ssd_new3<-school_shootings_data %>% select(state,year,school_type,age_shooter1,injured, killed) %>% drop_na()
+
+ssd_new3$state<-as.factor(ssd_new3$state)
+```
+
+```{r}
+set.seed(1234)
+
+ssd_split3 <- initial_split(ssd_new3, prop = 0.75)
+
+ssd_train3 <- training(ssd_split3)
+ssd_test3 <- testing(ssd_split3)
+```
+
+```{r}
+ssd_state_rec <- recipe(state ~ year+school_type+age_shooter1+injured,killed,
+                       data = ssd_train3) %>%
+  step_normalize(all_numeric_predictors())
+```
+
+```{r}
+ssd_state_spec <- nearest_neighbor(neighbors = 5) %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+```
+
+```{r}
+ssd_state_wf <- workflow() %>%
+  add_recipe(ssd_state_rec) %>%
+  add_model(ssd_state_spec)
+
+ssd_state_fit <- fit(ssd_state_wf,ssd_train3)
+```
+
+```{r}
+ssd_state_fit %>%
+  predict(ssd_test3) %>%
+  cbind(ssd_test3) %>%
+  conf_mat(state,.pred_class)
+```
+
+```{r}
+ssd_state_fit %>%
+  predict(ssd_test3) %>%
+  cbind(ssd_test3) %>%
+  accuracy(state,.pred_class) %>%
+  kable()
+```
